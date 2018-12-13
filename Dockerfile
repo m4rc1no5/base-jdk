@@ -4,8 +4,14 @@ MAINTAINER Marek Goldmann <mgoldman@redhat.com>
 # User root user to install software
 USER root
 
-# Install necessary packages
-RUN yum -y install java-1.8.0-openjdk-devel && yum clean all
+# Install OpenJDK 11
+WORKDIR /opt
+RUN yum install wget -y \
+	&& wget https://download.java.net/java/ga/jdk11/openjdk-11_linux-x64_bin.tar.gz \
+	&& tar zxvf openjdk-11_linux-x64_bin.tar.gz \
+	&& rm -f openjdk-11_linux-x64_bin.tar.gz
+ENV JAVA_HOME=/opt/jdk-11
+WORKDIR ~/
 
 # Switch back to jboss user
 USER jboss
